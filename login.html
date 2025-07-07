@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Interview Monitor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #1e3a5f;
+      color: white;
+    }
+    input, button {
+      padding: 12px;
+      font-size: 16px;
+      margin: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    input {
+      width: 250px;
+    }
+    button {
+      background-color: #00c9a7;
+      cursor: pointer;
+    }
+    .error {
+      color: #ff6b6b;
+      margin-top: 10px;
+    }
+  </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+  <h1>Login to Start Interview</h1>
+  <form onsubmit="login(event)">
+    <input type="email" id="email" placeholder="Email (Username)" required /><br />
+    <input type="password" id="password" placeholder="Password" required /><br />
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="error" id="errorMsg"></div>
+
+  <script>
+    // Your Firebase config
+     const firebaseConfig = {
+    apiKey: "AIzaSyAJ3WXK-TJV0TKXeXRY6upz-Le37sdhNAg",
+    authDomain: "recorded-195f6.firebaseapp.com",
+    projectId: "recorded-195f6",
+    storageBucket: "recorded-195f6.firebasestorage.app",
+    messagingSenderId: "784301797361",
+    appId: "1:784301797361:web:8518522a31eaa6e6d51e50"
+  };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+
+    function login(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          localStorage.setItem("userEmail", user.email);
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          errorMsg.innerText = "Login failed: " + error.message;
+        });
+    }
+  </script>
+</body>
+</html>
